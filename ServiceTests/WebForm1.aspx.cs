@@ -16,9 +16,12 @@ namespace ServiceTests
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
+        public List<string> imageUrls;
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            DropDownList1.Visible = false;
+            Image1.Visible = false;
+            imageUrls = new List<string>();
         }
 
         protected void TextBox1_TextChanged(object sender, EventArgs e)
@@ -103,6 +106,7 @@ namespace ServiceTests
             
         }
 
+
         protected void Button3_Click(object sender, EventArgs e)
         {
             
@@ -132,12 +136,22 @@ namespace ServiceTests
                         Console.WriteLine("{0}", rootObject[0].results[0].name);
                     }
                     */
+                    DropDownList1.Visible = true;
+                    Image1.Visible = true;
                     if (Jsonstuff.results.Count != 0)
                     {
                         TextBox3.Text = "Your search of: \"" + query + "\"\treturned these stores\n";
                         foreach (var result in Jsonstuff.results)
                         {
+                            
                             TextBox3.Text += result.name +"\n";
+                            //if (result.opening_hours.open_now)
+                            //{
+                            DropDownList1.Items.Add(result.name);
+
+                            if (result.photos != null) { 
+                                imageUrls.Add(result.photos.First().photo_reference);
+                            }
                         }
                     }
                     TextBox4.Text = "";
@@ -148,6 +162,14 @@ namespace ServiceTests
                 }
             //}
             
+        }
+
+        protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
+        {         
+            int index = DropDownList1.SelectedIndex;
+            Image1.ImageUrl = imageUrls[index];
+            HttpClient client = new HttpClient();
+
         }       
     }
 }

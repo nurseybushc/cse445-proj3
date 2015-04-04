@@ -10,10 +10,15 @@
             width: 373px;
             height: 126px;
         }
+        #form1 {
+            position: relative;
+            top: 3px;
+            left: 2px;
+        }
     </style>
 </head>
 <body>
-    <form id="form1" runat="server">
+    <form id="form1" runat="server" draggable="true">
     <div>
     
     </div>
@@ -26,13 +31,16 @@
         <asp:TextBox ID="TextBox2" runat="server">http://</asp:TextBox>
         <asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="TopTenWords" />
         <br />
-        Enter location here:
-        <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
+        Enter location here: <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
         <asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Google Places API Test" />
 &nbsp;<hr />
         <br />
         Output:<br />
-        <asp:TextBox ID="TextBox3" runat="server" Height="156px" TextMode="MultiLine" Width="413px"></asp:TextBox>
+        <asp:TextBox ID="TextBox3" runat="server" Height="156px" TextMode="MultiLine" Width="418px"></asp:TextBox>
+        <asp:Label ID="Label1" runat="server" Text="Open Now: "></asp:Label>
+        <asp:DropDownList ID="DropDownList1" runat="server" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged">
+        </asp:DropDownList>
+        <asp:Image ID="Image1" runat="server" />
     </form>
 </body>
 </html>
