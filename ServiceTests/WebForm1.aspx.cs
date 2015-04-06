@@ -16,12 +16,10 @@ namespace ServiceTests
 {
     public partial class WebForm1 : System.Web.UI.Page
     {
-        public List<string> imageUrls;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-            DropDownList1.Visible = false;
-            Image1.Visible = false;
-            imageUrls = new List<string>();
+
         }
 
         protected void TextBox1_TextChanged(object sender, EventArgs e)
@@ -103,22 +101,19 @@ namespace ServiceTests
             public List<object> html_attributions { get; set; }
             public List<Result> results { get; set; }
             public string status { get; set; }
-            
+                
         }
-
-
+        
+        
         protected void Button3_Click(object sender, EventArgs e)
         {
             
             string query = TextBox4.Text;
             string URL = "https://maps.googleapis.com/maps/api/place/textsearch/json";
-            //string keyAPI = "591556998604-u1idjdhn6isgd7dhr66cu1v8jmh4gfuv.apps.googleusercontent.com";
+
             string keyAPI = "AIzaSyCMcvEBMsrgKM3xGA1saqaQfXxGLcnlwsU";
             string parameters = "?query=" + query + "&key=" + keyAPI;
-            //string fullURL = URL + parameters;
-            
-            //using (var client = new HttpClient())
-            //{
+ 
             HttpClient client = new HttpClient();
                 client.BaseAddress = new Uri(URL);
                 client.DefaultRequestHeaders.Accept.Clear();
@@ -126,32 +121,14 @@ namespace ServiceTests
                 HttpResponseMessage response = client.GetAsync(parameters).Result;
                 if (response.IsSuccessStatusCode)
                 {
-                    //RootObject rObject = response.Content.ReadAsAsync<RootObject>();
-                    
-                    //var rootObjects = response.Content.ReadAsAsync<RootObject>();
-                    var Jsonstuff = JsonConvert.DeserializeObject<RootObject>(response.Content.ReadAsStringAsync().Result);
-                    /*
-                    foreach (var rObject in rootObjects)
-                    {
-                        Console.WriteLine("{0}", rootObject[0].results[0].name);
-                    }
-                    */
-                    DropDownList1.Visible = true;
-                    Image1.Visible = true;
+                    RootObject Jsonstuff = JsonConvert.DeserializeObject<RootObject>(response.Content.ReadAsStringAsync().Result);
+
                     if (Jsonstuff.results.Count != 0)
                     {
                         TextBox3.Text = "Your search of: \"" + query + "\"\treturned these stores\n";
                         foreach (var result in Jsonstuff.results)
-                        {
-                            
+                        {                            
                             TextBox3.Text += result.name +"\n";
-                            //if (result.opening_hours.open_now)
-                            //{
-                            DropDownList1.Items.Add(result.name);
-
-                            if (result.photos != null) { 
-                                imageUrls.Add(result.photos.First().photo_reference);
-                            }
                         }
                     }
                     TextBox4.Text = "";
@@ -159,17 +136,7 @@ namespace ServiceTests
                 else
                 {
                     Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
-                }
-            //}
-            
-        }
-
-        protected void DropDownList1_SelectedIndexChanged(object sender, EventArgs e)
-        {         
-            int index = DropDownList1.SelectedIndex;
-            Image1.ImageUrl = imageUrls[index];
-            HttpClient client = new HttpClient();
-
-        }       
+                }           
+         }        
     }
 }

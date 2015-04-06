@@ -22,7 +22,7 @@
     <div>
     
     </div>
-        Web Service Test Page<br />
+        Web Service Test Page1<br />
         Enter string to be filtered here:
         <asp:TextBox ID="TextBox1" runat="server" OnTextChanged="TextBox1_TextChanged"></asp:TextBox>
         <asp:Button ID="Button1" runat="server" OnClick="Button1_Click" Text="WordFilter" />
@@ -33,14 +33,16 @@
         <br />
         Enter location here: <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
         <asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Google Places API Test" />
-&nbsp;<hr />
+&nbsp;<br />
+        <hr />
         <br />
         Output:<br />
         <asp:TextBox ID="TextBox3" runat="server" Height="156px" TextMode="MultiLine" Width="418px"></asp:TextBox>
-        <asp:Label ID="Label1" runat="server" Text="Open Now: "></asp:Label>
-        <asp:DropDownList ID="DropDownList1" runat="server" OnSelectedIndexChanged="DropDownList1_SelectedIndexChanged">
-        </asp:DropDownList>
-        <asp:Image ID="Image1" runat="server" />
+        <br />
+        <br />
+        <br />
+        <asp:LinkButton ID="LinkButton1" runat="server" PostBackUrl="~/WebForm2.aspx">Go to Page 2</asp:LinkButton>
+        <br />
     </form>
 </body>
 </html>
