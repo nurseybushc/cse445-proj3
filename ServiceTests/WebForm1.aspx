@@ -31,7 +31,9 @@
         <asp:TextBox ID="TextBox2" runat="server">http://</asp:TextBox>
         <asp:Button ID="Button2" runat="server" OnClick="Button2_Click" Text="TopTenWords" />
         <br />
-        Enter location here: <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
+        Enter name of store here: <asp:TextBox ID="TextBox4" runat="server"></asp:TextBox>
+        &nbsp;Enter area here:
+        <asp:TextBox ID="TextBox5" runat="server"></asp:TextBox>
         <asp:Button ID="Button3" runat="server" OnClick="Button3_Click" Text="Google Places API Test" />
 &nbsp;<br />
         <hr />

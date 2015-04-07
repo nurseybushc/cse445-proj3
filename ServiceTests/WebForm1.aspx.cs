@@ -29,7 +29,8 @@ namespace ServiceTests
 
         protected void Button1_Click(object sender, EventArgs e)
         {
-            if (!(TextBox1.Text.Equals(" "))){
+            if (!(TextBox1.Text.Equals(" ")))
+            {
                 ServiceReference1.Service1Client proxy1 = new ServiceReference1.Service1Client();
                 TextBox3.Text = proxy1.WordFilter(TextBox1.Text);
                 TextBox1.Text = "";
@@ -96,47 +97,56 @@ namespace ServiceTests
             public string vicinity { get; set; }
         }
 
-        public class RootObject
+        public class StoreLocateResult
         {
             public List<object> html_attributions { get; set; }
             public List<Result> results { get; set; }
             public string status { get; set; }
-                
+
         }
-        
-        
+        public class RootObject
+        {
+            public StoreLocateResult storeLocateResult { get; set; }
+        }
+
         protected void Button3_Click(object sender, EventArgs e)
         {
-            
-            string query = TextBox4.Text;
-            string URL = "https://maps.googleapis.com/maps/api/place/textsearch/json";
 
-            string keyAPI = "AIzaSyCMcvEBMsrgKM3xGA1saqaQfXxGLcnlwsU";
-            string parameters = "?query=" + query + "&key=" + keyAPI;
- 
+            string name = TextBox4.Text;
+            string area = TextBox5.Text;
+            //string URL = "https://maps.googleapis.com/maps/api/place/textsearch/json";
+            string URL = "http://localhost:1709/Service1.svc/locate";
+            //string keyAPI = "AIzaSyCMcvEBMsrgKM3xGA1saqaQfXxGLcnlwsU";
+            string parameters = "?name=" + name + "&area=" + area;
+            string query = name + " " + area;
+
+            string myResult = "";
+            RootObject Jsonstuff = new RootObject();
             HttpClient client = new HttpClient();
-                client.BaseAddress = new Uri(URL);
-                client.DefaultRequestHeaders.Accept.Clear();
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-                HttpResponseMessage response = client.GetAsync(parameters).Result;
-                if (response.IsSuccessStatusCode)
-                {
-                    RootObject Jsonstuff = JsonConvert.DeserializeObject<RootObject>(response.Content.ReadAsStringAsync().Result);
+            client.BaseAddress = new Uri(URL);
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            HttpResponseMessage response = client.GetAsync(parameters).Result;
+            if (response.IsSuccessStatusCode)
+            {
+                myResult = response.Content.ReadAsStringAsync().Result;
+                Jsonstuff = JsonConvert.DeserializeObject<RootObject>(response.Content.ReadAsStringAsync().Result);
 
-                    if (Jsonstuff.results.Count != 0)
-                    {
-                        TextBox3.Text = "Your search of: \"" + query + "\"\treturned these stores\n";
-                        foreach (var result in Jsonstuff.results)
-                        {                            
-                            TextBox3.Text += result.name +"\n";
-                        }
-                    }
-                    TextBox4.Text = "";
-                }
-                else
+                if (Jsonstuff.storeLocateResult.results.Count != 0)
                 {
-                    Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
-                }           
-         }        
+                    TextBox3.Text = "Your search of: \"" + query + "\" returned these stores\n";
+                    foreach (var result in Jsonstuff.storeLocateResult.results)
+                    {
+                        TextBox3.Text += result.name + "\n";
+                    }
+                }
+                TextBox4.Text = "";
+                TextBox5.Text = "";
+            }
+            else
+            {
+                Console.WriteLine("{0} ({1})", (int)response.StatusCode, response.ReasonPhrase);
+            }
+        }
     }
 }
